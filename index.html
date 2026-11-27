@@ -145,7 +145,7 @@ footer { margin-top: 32px; font-size: 12px; color: var(--muted); }
   <section class="grid2">
     <div class="card">
       <h2><span class="step">1</span>檢驗數值 Excel</h2>
-      <p class="small">需含：個案編號（條碼編號）、檢體（G 欄，B=血液、U=尿液）、檢驗名稱、日期、結果值。尿液檢體不納入分析。</p>
+      <p class="small">需含：個案編號、檢體、檢驗名稱、日期、結果值。血液以外的檢體不納入分析。</p>
       <label class="drop" id="dropLab">
         <input type="file" id="fileLab" accept=".xlsx,.xls,.csv">
         <div class="big">點此選擇或拖曳檔案到這裡</div>
@@ -155,7 +155,7 @@ footer { margin-top: 32px; font-size: 12px; color: var(--muted); }
     </div>
     <div class="card">
       <h2><span class="step">2</span>確診時間點 Excel</h2>
-      <p class="small">需含：個案編號（條碼編號）與首次確診攝護腺癌日期。若有多個工作表，會自動選含「確診」欄位的那一張。</p>
+      <p class="small">需含：個案編號與首次確診攝護腺癌日期。若有多個工作表，會自動選含「確診」欄位的那一張。</p>
       <label class="drop" id="dropDx">
         <input type="file" id="fileDx" accept=".xlsx,.xls,.csv">
         <div class="big">點此選擇或拖曳檔案到這裡</div>
@@ -632,7 +632,7 @@ function renderAll() { renderKpis(); renderSummary(); renderChips(); renderBar()
 
 function renderKpis() {
   const {st, dx, pts} = state.ds, L = state.res.list;
-  const k = [[fmtN(dx.size), '確診個案（確診檔）'], [fmtN(pts.size), '有血液檢驗的個案'], [fmtN(st.used), '納入的血液檢驗筆數'], [fmtN(st.urine), '已排除尿液（U）筆數'],
+  const k = [[fmtN(dx.size), '確診個案（確診檔）'], [fmtN(pts.size), '有血液檢驗的個案'], [fmtN(st.used), '納入的血液檢驗筆數'], [fmtN(st.urine + st.other), '已排除非血液檢體筆數'],
     [fmtN(L.length), '分析的檢驗項目'], [fmtN(L.filter(r => r.p < 0.05).length), '顯著相關項目（p<0.05）']];
   $('#kpis').innerHTML = k.map(([v, l]) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
 }
